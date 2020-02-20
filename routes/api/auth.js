@@ -3,13 +3,23 @@ const express = require("express");
 // using express router
 
 const router = express.Router();
-
-// creating a route
+const auth = require("../../middleware/auth");
+const User = require("../../models/User");
 
 // @route GET api/auth
 // @desc Test route
-// @access Public
-router.get("/", (req, res) => res.send("Auth Route"));
+// @access
+
+// adding "auth" to below makes it protected
+router.get("/", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 // export router
 
