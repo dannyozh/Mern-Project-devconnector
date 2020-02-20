@@ -8,11 +8,15 @@ const router = express.Router();
 
 const { check, validationResult } = require("express-validator");
 
-// bring in user model, gravatar, bcrypt
+// bring in user model, gravatar, bcrypt, jwt
 
 const User = require("../../models/User");
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+// config for secret message
+const config = require("config");
 
 // @route POST api/users
 // @desc  Register user
@@ -71,7 +75,23 @@ router.post(
       await user.save();
 
       // return jsonwebtoken
-      res.send("User registered");
+
+      const payload = {
+        user: {
+          // mongoose uses an abstraction, so id instead of _id
+          id: user.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        config.get("jwtToken"),
+        { expiresIn: 360000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
     } catch (err) {
       // something wrong with the server
       console.error(err.message);
