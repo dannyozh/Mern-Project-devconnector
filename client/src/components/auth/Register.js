@@ -1,7 +1,10 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
+// connect component to redux with connect
+import { connect } from "react-redux";
+import { setAlert } from "../../actions/alert";
 
-const Register = () => {
+const Register = props => {
   // object with field values
 
   const [formData, setFormData] = useState({
@@ -22,7 +25,7 @@ const Register = () => {
     e.preventDefault();
     // make sure pw's match
     if (password !== password2) {
-      console.log("Passwords do not match");
+      props.setAlert("Passwords do not match", "danger");
     } else {
       console.log("USER REGISTERED SUCCESS");
     }
@@ -88,4 +91,7 @@ const Register = () => {
   );
 };
 
-export default Register;
+// connect takes in two things:
+// 1) any state you want to map
+// 2) object with actions you want to use
+export default connect(null, { setAlert })(Register);
