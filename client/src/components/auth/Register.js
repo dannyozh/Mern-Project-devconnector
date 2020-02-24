@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 // connect component to redux with connect
 import { connect } from "react-redux";
 import { setAlert } from "../../actions/alert";
+import PropTypes from "prop-types";
 
-const Register = props => {
+const Register = ({ setAlert }) => {
   // object with field values
 
   const [formData, setFormData] = useState({
@@ -25,7 +26,7 @@ const Register = props => {
     e.preventDefault();
     // make sure pw's match
     if (password !== password2) {
-      props.setAlert("Passwords do not match", "danger");
+      setAlert("Passwords do not match", "danger");
     } else {
       console.log("USER REGISTERED SUCCESS");
     }
@@ -91,7 +92,11 @@ const Register = props => {
   );
 };
 
-// connect takes in two things:
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired
+};
+
+// connect takes in either of two things:
 // 1) any state you want to map
 // 2) object with actions you want to use
 export default connect(null, { setAlert })(Register);
