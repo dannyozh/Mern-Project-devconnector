@@ -1,8 +1,11 @@
 import React, { useState, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { createProfile } from "../../actions/profile";
+// withRouter lets you redirect because of the 'history' part
+import { Link, withRouter } from "react-router-dom";
 
-const CreateProfile = props => {
+const CreateProfile = ({ createProfile, history }) => {
   // employ usestate to get data
   const [formData, setFormData] = useState({
     company: "",
@@ -43,6 +46,11 @@ const CreateProfile = props => {
       [e.target.name]: e.target.value
     });
 
+  const onSubmit = e => {
+    e.preventDefault();
+    createProfile(formData, history);
+  };
+
   return (
     <Fragment>
       <h1 className='large text-primary'>Create Your Profile</h1>
@@ -51,7 +59,7 @@ const CreateProfile = props => {
         profile stand out
       </p>
       <small>* = required field</small>
-      <form className='form'>
+      <form className='form' onSubmit={onSubmit}>
         <div className='form-group'>
           <select name='status' value={status} onChange={e => onChange(e)}>
             <option value='0'>* Select Professional Status</option>
@@ -218,6 +226,9 @@ const CreateProfile = props => {
   );
 };
 
-CreateProfile.propTypes = {};
+CreateProfile.propTypes = {
+  createProfile: PropTypes.func.isRequired
+};
 
-export default CreateProfile;
+// withRouter lets you pass in history object
+export default connect(null, { createProfile })(withRouter(CreateProfile));

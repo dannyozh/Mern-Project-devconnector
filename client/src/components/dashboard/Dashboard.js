@@ -26,6 +26,8 @@ const Dashboard = ({
       <p className='lead'>
         <i className='fas fa-user'>Welcome {user && user.name}</i>
       </p>
+
+      {/* if profile is there. returns profile. if not, show button*/}
       {profile !== null ? (
         <Fragment>has</Fragment>
       ) : (
