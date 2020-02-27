@@ -1,7 +1,10 @@
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { login } from "../../actions/auth";
 
-const Login = () => {
+const Login = ({ login, isAuthenticated }) => {
   // object with field values
 
   const [formData, setFormData] = useState({
@@ -19,8 +22,13 @@ const Login = () => {
   const onSubmit = async e => {
     e.preventDefault();
     // make sure pw's match
-    console.log("LOGIN SUCCESS");
+    login(email, password);
   };
+
+  // Redirect if logged in
+  if (isAuthenticated) {
+    return <Redirect to='/dashboard' />;
+  }
 
   return (
     <Fragment>
@@ -58,4 +66,19 @@ const Login = () => {
   );
 };
 
-export default Login;
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
+};
+
+// mapping state to get boolean value of isAuthenticated
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+// connect takes in either of two things:
+// 1) any state you want to map
+// 2) object with actions you want to use
+
+export default connect(mapStateToProps, { login })(Login);
