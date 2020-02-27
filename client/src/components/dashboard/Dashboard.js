@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { getCurrentProfile } from "../../actions/profile";
 import Spinner from "../layout/Spinner";
 import { Link } from "react-router-dom";
+import DashboardActions from "./DashboardActions";
 
 const Dashboard = ({
   getCurrentProfile,
@@ -29,7 +30,7 @@ const Dashboard = ({
 
       {/* if profile is there. returns profile. if not, show button*/}
       {profile !== null ? (
-        <Fragment>has</Fragment>
+        <DashboardActions />
       ) : (
         // if they don't have profile
         <Fragment>
