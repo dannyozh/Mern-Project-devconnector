@@ -1,6 +1,6 @@
 import axios from "axios";
 import { setAlert } from "./alert";
-import { GET_PROFILE, PROFILE_ERROR } from "./types";
+import { GET_PROFILE, PROFILE_ERROR, UPDATE_PROFILE } from "./types";
 
 // Get current user's profile
 
@@ -53,6 +53,76 @@ export const createProfile = (
     if (!edit) {
       history.push("/dashboard");
     }
+  } catch (err) {
+    const errors = err.response.data.errors;
+    // if there are errors, loop through them and dispatch setAlert
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    }
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// add experience to profile
+export const addExperience = (formData, history) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    // make the post request to api/profile
+    const res = await axios.put("/api/profile/experience", formData, config);
+
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: res.data
+    });
+
+    // alert to show what kind of post request
+    dispatch(setAlert("Experience Added", "success"));
+
+    // redirect to dashboard
+    history.push("/dashboard");
+  } catch (err) {
+    const errors = err.response.data.errors;
+    // if there are errors, loop through them and dispatch setAlert
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    }
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// add education to profile
+export const addEducation = (formData, history) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    // make the post request to api/profile
+    const res = await axios.put("/api/profile/education", formData, config);
+
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: res.data
+    });
+
+    // alert to show what kind of post request
+    dispatch(setAlert("Education Added", "success"));
+
+    // redirect to dashboard
+    history.push("/dashboard");
   } catch (err) {
     const errors = err.response.data.errors;
     // if there are errors, loop through them and dispatch setAlert
