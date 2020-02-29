@@ -48,7 +48,7 @@ const EditProfile = ({
       instagram: loading || !profile.social ? "" : profile.social.instagram
     });
     // when it loads is when you want it to run
-  }, [loading]);
+  }, [loading, getCurrentProfile]);
 
   const {
     company,

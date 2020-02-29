@@ -20,7 +20,7 @@ const Dashboard = ({
 }) => {
   useEffect(() => {
     getCurrentProfile();
-  }, []);
+  }, [getCurrentProfile]);
   // if profile is null and still loading, show spinner
   return loading && profile === null ? (
     <Spinner />
