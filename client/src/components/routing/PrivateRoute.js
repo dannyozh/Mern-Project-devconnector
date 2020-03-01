@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
 
-//  followign format of <Route exact path='/login' component={Login} />
+//  following format of <Route exact path='/login' component={Login} />
 //  Private route has to accept component prop and anything else passed into it
 
 const PrivateRoute = ({
